@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/database/app_database.dart';
 import 'package:store_app/screens/home/home.dart';
 import 'package:store_app/screens/register/register.dart';
 
@@ -7,6 +8,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return Scaffold(
       body: Center(
         child: Container(
@@ -36,6 +40,7 @@ class LoginScreen extends StatelessWidget {
 
               // Username Field
               TextField(
+                controller: usernameController,
                 decoration: InputDecoration(
                   labelText: 'Username',
                   border: OutlineInputBorder(
@@ -47,6 +52,7 @@ class LoginScreen extends StatelessWidget {
 
               // Password Field
               TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -59,14 +65,30 @@ class LoginScreen extends StatelessWidget {
 
               // Login Button
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Implement login functionality here
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  );
+                  final username = usernameController.text;
+                  final password = passwordController.text;
+
+                  await AppDatabase.login(username, password).then((user) {
+                    if (user == null) {
+                      debugPrint('Login failed');
+                      return null;
+                    }
+
+                    // Clear text in password textfield
+                    passwordController.clear();
+
+                    // If login is success then go to Home screen and pass user who logged in
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeScreen(
+                          user: user,
+                        ),
+                      ),
+                    );
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

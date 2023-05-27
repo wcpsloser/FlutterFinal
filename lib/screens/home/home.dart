@@ -1,35 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/models/product.dart';
+import 'package:store_app/database/app_database.dart';
+import 'package:store_app/models/order.dart';
+import 'package:store_app/models/user.dart';
 import 'package:store_app/screens/cart/cart.dart';
 
 import 'widgets/product_card.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final User user;
+
+  const HomeScreen({
+    required this.user,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final products = <Product>[
-      Product(
-        name: 'Product 1',
-        description: 'Description for Product 1',
-        price: 10.99,
-        stock: 10,
-      ),
-      Product(
-        name: 'Product 2',
-        description: 'Description for Product 2',
-        price: 19.99,
-        stock: 10,
-      ),
-      Product(
-        name: 'Product 3',
-        description: 'Description for Product 3',
-        price: 14.99,
-        stock: 10,
-      ),
-    ];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -43,7 +29,11 @@ class HomeScreen extends StatelessWidget {
                 if (value == 'cart') {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const CartScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => CartScreen(
+                        user: user,
+                      ),
+                    ),
                   );
                 } else if (value == 'logout') {
                   // Perform logout functionality here
@@ -51,16 +41,16 @@ class HomeScreen extends StatelessWidget {
                   Navigator.pop(context);
                 }
               },
-              icon: const Row(
+              icon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.person),
-                  SizedBox(width: 8.0),
+                  const Icon(Icons.person),
+                  const SizedBox(width: 8.0),
 
                   // Show Username Text
                   Text(
-                    'Username',
-                    style: TextStyle(fontSize: 16.0),
+                    user.fullname,
+                    style: const TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
@@ -93,16 +83,30 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return ProductCard(
-            product: products[index],
-            onAddToCart: () {
-              // Implement add to cart functionality here
-              // You can access the selected product using products[index]
-              // and perform the necessary operations.
-            },
+      body: FutureBuilder(
+        future: AppDatabase.getProducts(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return ProductCard(
+                  product: snapshot.data![index],
+                  onAddToCart: () async {
+                    final order = Order(
+                      userId: user.id,
+                      product: snapshot.data![index],
+                      quantity: 1,
+                      status: 'unpaid',
+                    );
+                    await AppDatabase.createOrder(order);
+                  },
+                );
+              },
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         },
       ),

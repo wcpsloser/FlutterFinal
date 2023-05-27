@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:store_app/models/product.dart';
+import 'package:store_app/models/order.dart';
 
 class CartItemCard extends StatelessWidget {
-  final Product product;
+  final Order order;
 
   const CartItemCard({
-    required this.product,
+    required this.order,
     super.key,
   });
 
@@ -20,7 +20,7 @@ class CartItemCard extends StatelessWidget {
           children: [
             // Show Product name
             Text(
-              product.name,
+              order.product.name,
               style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -29,12 +29,12 @@ class CartItemCard extends StatelessWidget {
             const SizedBox(height: 8.0),
 
             // Show description
-            Text(product.description),
+            Text(order.product.description),
             const SizedBox(height: 8.0),
 
             // Show price
             Text(
-              'Price: \$${product.price.toStringAsFixed(2)}',
+              'Price: \$${order.product.price.toStringAsFixed(2)}',
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
@@ -44,7 +44,7 @@ class CartItemCard extends StatelessWidget {
 
             // Show quantity
             Text(
-              'Quantity: ${product.stock}',
+              'Quantity: ${order.quantity}',
               style: const TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,

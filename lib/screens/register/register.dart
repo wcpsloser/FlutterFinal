@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:store_app/database/app_database.dart';
+import 'package:store_app/models/user.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
+
     return Scaffold(
       body: Center(
         child: Container(
@@ -38,6 +43,7 @@ class RegisterScreen extends StatelessWidget {
 
               // Username Field
               TextField(
+                controller: usernameController,
                 decoration: InputDecoration(
                   labelText: 'Username',
                   border: OutlineInputBorder(
@@ -49,6 +55,7 @@ class RegisterScreen extends StatelessWidget {
 
               // Password Field
               TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -61,8 +68,18 @@ class RegisterScreen extends StatelessWidget {
 
               // Register Button
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Implement register functionality here
+                  final user = User(
+                    fullname: usernameController.text,
+                    username: usernameController.text,
+                    password: passwordController.text,
+                  );
+
+                  // After create user, back to Login screen
+                  await AppDatabase.createUser(user).then(
+                    (_) => Navigator.pop(context),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
