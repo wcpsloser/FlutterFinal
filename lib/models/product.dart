@@ -3,6 +3,7 @@ import 'dart:convert';
 class Product {
   final int? id;
   final String name;
+  final String img;
   final String description;
   final double price;
   int stock;
@@ -10,6 +11,7 @@ class Product {
   Product({
     this.id,
     required this.name,
+    required this.img,
     required this.description,
     required this.price,
     this.stock = 0,
@@ -18,6 +20,7 @@ class Product {
   Product copyWith({
     int? id,
     String? name,
+    String? img,
     String? description,
     double? price,
     int? stock,
@@ -25,6 +28,7 @@ class Product {
     return Product(
       id: id ?? this.id,
       name: name ?? this.name,
+      img: img ?? this.img,
       description: description ?? this.description,
       price: price ?? this.price,
       stock: stock ?? this.stock,
@@ -35,6 +39,7 @@ class Product {
     return <String, dynamic>{
       'id': id,
       'name': name,
+      'img': img,
       'description': description,
       'price': price,
       'stock': stock,
@@ -45,6 +50,7 @@ class Product {
     return Product(
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] as String,
+      img: map['img'] as String,
       description: map['description'] as String,
       price: map['price'].runtimeType != double
           ? double.parse(map['price'])

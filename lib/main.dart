@@ -8,14 +8,18 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of your application.r
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Store App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSwatch(
+            primaryColorDark: Colors.grey.shade700,
+            primarySwatch: Colors.amber,
+            backgroundColor: Colors.amber.shade300,
+            errorColor: Colors.redAccent),
         useMaterial3: true,
       ),
       home: const LoginScreen(),

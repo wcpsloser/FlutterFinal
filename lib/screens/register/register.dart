@@ -102,7 +102,7 @@ class RegisterScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Back to Login'),
+                child: const Text('Already have an account? Login here'),
               ),
             ],
           ),

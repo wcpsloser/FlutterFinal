@@ -9,8 +9,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 // Setup database
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",
-  password: "P@ssw0rd",
+  user: "user",
+  password: "1234",
   database: "store_app"
 });
 
@@ -55,10 +55,10 @@ app.get("/product", async (req, res) => {
 
 // UPDATE - Update a specific product
 app.put("/product/:id", async (req, res) => {
-  const { name, description, price, stock } = req.body;
+  const { name,img, description, price, stock } = req.body;
   const id = req.params.id;
 
-  let sql = "UPDATE " + productTable + " SET name = '" + name + "', description = '" + description + "', price = " + price + ", stock = " + stock + " WHERE id = " + id;
+  let sql = "UPDATE " + productTable + " SET name = '" + name +"', img ='"+img +"', description = '" + description + "', price = " + price + ", stock = " + stock + " WHERE id = " + id;
   await queryDB(sql);
 
   console.log("Product updated successfully");

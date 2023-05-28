@@ -15,42 +15,45 @@ class CartItemCard extends StatelessWidget {
       margin: const EdgeInsets.all(10.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Show Product name
-            Text(
-              order.product.name,
-              style: const TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
+        child: InkWell(
+          onTap: () => debugPrint("sad"),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Show Product name
+              Text(
+                order.product.name,
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
 
-            // Show description
-            Text(order.product.description),
-            const SizedBox(height: 8.0),
+              // Show description
+              Text(order.product.description),
+              const SizedBox(height: 8.0),
 
-            // Show price
-            Text(
-              'Price: \$${order.product.price.toStringAsFixed(2)}',
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
+              // Show price
+              Text(
+                'Price: \$${order.product.price.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
 
-            // Show quantity
-            Text(
-              'Quantity: ${order.quantity}',
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
+              // Show quantity
+              Text(
+                'Quantity: ${order.quantity}',
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
