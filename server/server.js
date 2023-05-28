@@ -105,8 +105,9 @@ app.get("/order", async (req, res) => {
 app.put("/order/:id", async (req, res) => {
   const { user_id, product_id, quantity, status } = req.body;
   const id = req.params.id;
-
+  
   let sql = "UPDATE " + orderTable + " SET user_id = " + user_id + ", product_id = " + product_id + ", quantity = " + quantity + ", status = '" + status + "' WHERE id = " + id;
+  console.log(sql);
   await queryDB(sql);
 
   console.log("Order updated successfully");

@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:store_app/models/product.dart';
 
 class ProductCard extends StatelessWidget {
@@ -17,47 +18,66 @@ class ProductCard extends StatelessWidget {
       margin: const EdgeInsets.all(10.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Product name
-            Text(
-              product.name,
-              style: const TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
+        child: InkWell(
+          onTap: () => showCupertinoModalBottomSheet(
+            expand: false,
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (context) => Container(
+              width: 300,
+              height: 300,
+              color: Colors.amber,
+              child: Column(
+                children: [
+                  RichText(
+                    text: const TextSpan(text: "oof"),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 8.0),
-
-            // Show description
-            Text(product.description),
-            const SizedBox(height: 8.0),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Show stock of product
-                Text(
-                  'Stock: ${product.stock}',
-                  style: const TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Product name
+              Text(
+                product.name,
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              const SizedBox(height: 8.0),
 
-                // Add to Cart Button
-                ElevatedButton(
-                  onPressed: onAddToCart,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.white, // Set background color to white
+              // Show description
+              Text(product.description),
+              const SizedBox(height: 8.0),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Show stock of product
+                  Text(
+                    'Stock: ${product.stock}',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  child: const Text('Add to Cart'),
-                ),
-              ],
-            ),
-          ],
+
+                  // Add to Cart Button
+                  ElevatedButton(
+                    onPressed: onAddToCart,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Colors.white, // Set background color to white
+                    ),
+                    child: const Text('Add to Cart'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,18 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/database/app_database.dart';
 import 'package:store_app/models/order.dart';
+import 'package:store_app/models/product.dart';
 import 'package:store_app/models/user.dart';
 import 'package:store_app/screens/cart/cart.dart';
 
 import 'widgets/product_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final User user;
 
   const HomeScreen({
     required this.user,
     super.key,
   });
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Future<List<Product>>? _productFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _productFuture = AppDatabase.getProducts();
+  }
+
+  void _reloadProducts() {
+    setState(() {
+      _productFuture = AppDatabase.getProducts();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +44,25 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: PopupMenuButton<String>(
-              onSelected: (value) {
+              onSelected: (value) async {
                 // Function for check that Cart or Logout Button is pressed
                 if (value == 'cart') {
-                  Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => CartScreen(
-                        user: user,
+                        user: widget.user,
                       ),
                     ),
-                  );
+                  ).then((_) => _reloadProducts());
                 } else if (value == 'logout') {
                   // Perform logout functionality here
                   // You can add your own logic for logging out the user.
                   Navigator.pop(context);
+                } else if (value == 'reload') {
+                  // Perform logout functionality here
+                  // You can add your own logic for logging out the user.
+                  _reloadProducts();
                 }
               },
               icon: Row(
@@ -49,13 +73,24 @@ class HomeScreen extends StatelessWidget {
 
                   // Show Username Text
                   Text(
-                    user.fullname,
+                    widget.user.fullname,
                     style: const TextStyle(fontSize: 16.0),
                   ),
                 ],
               ),
               itemBuilder: (BuildContext context) => [
                 // Cart Button
+                const PopupMenuItem<String>(
+                  value: 'reload',
+                  child: Row(
+                    children: [
+                      Icon(Icons.replay),
+                      SizedBox(width: 8.0),
+                      Text('Reload'),
+                    ],
+                  ),
+                ),
+
                 const PopupMenuItem<String>(
                   value: 'cart',
                   child: Row(
@@ -84,7 +119,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-        future: AppDatabase.getProducts(),
+        future: _productFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -93,13 +128,29 @@ class HomeScreen extends StatelessWidget {
                 return ProductCard(
                   product: snapshot.data![index],
                   onAddToCart: () async {
-                    final order = Order(
-                      userId: user.id,
+                    final currentOrder = Order(
+                      userId: widget.user.id,
                       product: snapshot.data![index],
                       quantity: 1,
                       status: 'unpaid',
                     );
-                    await AppDatabase.createOrder(order);
+                    final orders = await AppDatabase.getOrders();
+
+                    for (Order order in orders) {
+                      final isFoundOrder =
+                          currentOrder.userId == order.userId &&
+                              order.product.id == currentOrder.product.id;
+                      // check current order if it exits if yes + quantity
+                      if (isFoundOrder && order.status == 'unpaid') {
+                        final temporder = order.copyWith(
+                          quantity: order.quantity + 1,
+                        );
+
+                        await AppDatabase.updateOrder(temporder);
+                        return;
+                      }
+                    }
+                    await AppDatabase.createOrder(currentOrder);
                   },
                 );
               },

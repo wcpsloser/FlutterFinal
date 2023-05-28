@@ -105,6 +105,35 @@ class AppDatabase {
   }
 
   //? Cart helper
+  static Future<List<Order>> getReadOnlyUserCart(int? userId) async {
+    // If user ID is null, then return empty list
+    if (userId == null) return [];
+
+    final orders = await getOrders();
+
+    // Filter orders by user ID and status which unpaid as carts
+    List<Order> carts = [];
+
+    List<String> productname = [];
+    for (Order order in orders) {
+      if (order.userId == userId && order.status == 'unpaid') {
+        carts.add(order);
+      }
+    }
+    List<Order> finalcarts = [];
+    for (Order order in carts) {
+      if (!productname.contains(order.product.name)) {
+        productname.add(order.product.name);
+        int x = carts
+            .where((element) => element.product.name == order.product.name)
+            .length;
+        order.quantity = x;
+        finalcarts.add(order);
+      }
+    }
+    return finalcarts;
+  }
+
   static Future<List<Order>> getUserCart(int? userId) async {
     // If user ID is null, then return empty list
     if (userId == null) return [];
@@ -134,7 +163,7 @@ class AppDatabase {
       for (Product product in products) {
         if (product.id == orderUpdated.product.id) {
           // Check if the product is in stock or not
-          final isHaveProduct = (product.stock - orderUpdated.quantity) > 0;
+          final isHaveProduct = (product.stock - orderUpdated.quantity) >= 0;
           if (isHaveProduct) {
             // Update product
             final productUpdated = product.copyWith(
