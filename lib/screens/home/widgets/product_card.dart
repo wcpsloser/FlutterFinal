@@ -19,27 +19,16 @@ class ProductCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: InkWell(
-          onTap: () => showCupertinoModalBottomSheet(
-            expand: false,
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (context) => Container(
-              width: 300,
-              height: 300,
-              color: Colors.amber,
-              child: Column(
-                children: [
-                  RichText(
-                    text: const TextSpan(text: "oof"),
-                  ),
-                ],
-              ),
-            ),
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Product name
+              Center(
+                child: Image.asset(
+                  "assets/pics/product/" + product.img,
+                  scale: 1,
+                ),
+              ),
               Text(
                 product.name,
                 style: const TextStyle(
@@ -47,7 +36,7 @@ class ProductCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8.0),
+              const SizedBox(height: 20.0),
 
               // Show description
               Text(product.description),
@@ -58,7 +47,7 @@ class ProductCard extends StatelessWidget {
                 children: [
                   // Show stock of product
                   Text(
-                    'Stock: ${product.stock}',
+                    'Price: ${product.price} บาท',
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -69,8 +58,8 @@ class ProductCard extends StatelessWidget {
                   ElevatedButton(
                     onPressed: onAddToCart,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Colors.white, // Set background color to white
+                      backgroundColor: const Color.fromARGB(
+                          255, 0, 0, 0), // Set background color to white
                     ),
                     child: const Text('Add to Cart'),
                   ),

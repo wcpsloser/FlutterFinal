@@ -39,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
+        toolbarHeight: 80,
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         automaticallyImplyLeading: false, // Remove back button
         actions: [
           Padding(
@@ -80,17 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               itemBuilder: (BuildContext context) => [
                 // Cart Button
-                const PopupMenuItem<String>(
-                  value: 'reload',
-                  child: Row(
-                    children: [
-                      Icon(Icons.replay),
-                      SizedBox(width: 8.0),
-                      Text('Reload'),
-                    ],
-                  ),
-                ),
-
                 const PopupMenuItem<String>(
                   value: 'cart',
                   child: Row(

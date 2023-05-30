@@ -9,8 +9,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 // Setup database
 const db = mysql.createConnection({
   host: "localhost",
-  user: "user",
-  password: "1234",
+  user: "root",
+  password: "123456789",
   database: "store_app"
 });
 

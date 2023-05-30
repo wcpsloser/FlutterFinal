@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_app/models/order.dart';
+import 'package:store_app/models/product.dart';
 
 class CartItemCard extends StatelessWidget {
   final Order order;
@@ -20,6 +21,13 @@ class CartItemCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                child: Image.asset(
+                  "assets/pics/product/" + order.product.img,
+                  scale: 5,
+                ),
+              ),
+
               // Show Product name
               Text(
                 order.product.name,

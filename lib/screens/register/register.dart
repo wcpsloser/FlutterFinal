@@ -11,9 +11,10 @@ class RegisterScreen extends StatelessWidget {
     final passwordController = TextEditingController();
 
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 14, 14, 14),
       body: Center(
         child: Container(
-          width: 300.0,
+          width: 500.0,
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.0),
@@ -35,6 +36,7 @@ class RegisterScreen extends StatelessWidget {
               const Text(
                 'Register',
                 style: TextStyle(
+                  color: Colors.red,
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -82,6 +84,7 @@ class RegisterScreen extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 200, 32, 32),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -91,6 +94,9 @@ class RegisterScreen extends StatelessWidget {
                   width: double.infinity,
                   child: Text(
                     'Register',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        fontSize: 24),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -102,7 +108,12 @@ class RegisterScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Already have an account? Login here'),
+                child: const Text(
+                  'Already have an account? Login here',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 171, 4, 4), fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),

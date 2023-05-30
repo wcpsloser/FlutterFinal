@@ -14,14 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Store App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-            primaryColorDark: Colors.grey.shade700,
-            primarySwatch: Colors.amber,
-            backgroundColor: Colors.amber.shade300,
-            errorColor: Colors.redAccent),
-        useMaterial3: true,
-      ),
       home: const LoginScreen(),
     );
   }
